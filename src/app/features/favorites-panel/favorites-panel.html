@@ -1,0 +1,39 @@
+<section class="fav-panel" aria-label="Ciudades favoritas">
+  <h3 class="fav-panel__title">
+    <span aria-hidden="true">⭐</span> Favoritos
+  </h3>
+
+  @if (favoritesService.favorites().length === 0) {
+    <p class="fav-panel__empty" aria-live="polite">
+      <span aria-hidden="true">🏙️</span><br />
+      Marca ciudades como favoritas para acceso rápido.
+    </p>
+  } @else {
+    <ul class="fav-list" role="list">
+      @for (city of favoritesService.favorites(); track city.id) {
+        <li class="fav-item" role="listitem">
+          <button
+            class="fav-item__btn"
+            type="button"
+            [attr.aria-label]="'Ver clima de ' + city.name"
+            (click)="selectCity(city)"
+          >
+            <span class="fav-item__icon" aria-hidden="true">📍</span>
+            <span class="fav-item__info">
+              <span class="fav-item__name">{{ city.name }}</span>
+              <span class="fav-item__country">{{ city.country }}</span>
+            </span>
+          </button>
+          <button
+            class="fav-item__remove"
+            type="button"
+            [attr.aria-label]="'Quitar ' + city.name + ' de favoritos'"
+            (click)="removeFavorite(city, $event)"
+          >
+            ✕
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</section>

@@ -1,0 +1,66 @@
+@let w = weather();
+@let cond = condition();
+@let cityData = city();
+@let fav = isFavorite();
+
+<article class="current-weather" aria-label="Clima actual de {{ cityData.name }}">
+  <!-- Header -->
+  <div class="cw-header">
+    <div class="cw-location">
+      <h2 class="cw-city">{{ cityData.name }}</h2>
+      <p class="cw-region">
+        @if (cityData.admin1) { {{ cityData.admin1 }}, } {{ cityData.country }}
+      </p>
+    </div>
+    <button
+      class="cw-fav-btn"
+      type="button"
+      [attr.aria-label]="fav ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+      [attr.aria-pressed]="fav"
+      (click)="toggleFavorite()"
+    >
+      <span class="cw-fav-star" [class.cw-fav-star--active]="fav" aria-hidden="true">
+        {{ fav ? '⭐' : '☆' }}
+      </span>
+    </button>
+  </div>
+
+  <!-- Main temperature -->
+  <div class="cw-main">
+    <div class="cw-icon-wrap" [style.--condition-color]="cond.color" aria-hidden="true">
+      <span class="cw-icon">{{ cond.icon }}</span>
+    </div>
+    <div class="cw-temp-block">
+      <span class="cw-temp" aria-label="{{ w.temperature_2m }} grados celsius">
+        {{ w.temperature_2m }}<sup>°C</sup>
+      </span>
+      <p class="cw-desc">{{ cond.label }}</p>
+    </div>
+  </div>
+
+  <!-- Stats grid -->
+  <dl class="cw-stats">
+    <div class="cw-stat">
+      <dt class="cw-stat__label">💧 Humedad</dt>
+      <dd class="cw-stat__value">{{ w.relative_humidity_2m }}<span>%</span></dd>
+      <div class="cw-stat__bar">
+        <div
+          class="cw-stat__fill cw-stat__fill--humidity"
+          [style.width.%]="w.relative_humidity_2m"
+          role="presentation"
+        ></div>
+      </div>
+    </div>
+
+    <div class="cw-stat">
+      <dt class="cw-stat__label">💨 Viento</dt>
+      <dd class="cw-stat__value">{{ w.wind_speed_10m }}<span> km/h</span></dd>
+      <p class="cw-stat__sub">{{ windBeaufort().label }}</p>
+    </div>
+
+    <div class="cw-stat">
+      <dt class="cw-stat__label">🌡️ Sensación</dt>
+      <dd class="cw-stat__value">{{ feelsLike() }}<span>°C</span></dd>
+    </div>
+  </dl>
+</article>

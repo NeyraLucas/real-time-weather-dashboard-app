@@ -1,0 +1,20 @@
+<section class="forecast" aria-label="Pronóstico de 7 días">
+  <h3 class="forecast__title">
+    <span aria-hidden="true">📅</span> Pronóstico 7 días
+  </h3>
+  <div class="forecast__grid" role="list">
+    @for (day of forecastDays(); track day.date) {
+      @let cond = day.condition;
+      <article class="forecast-card" role="listitem">
+        <p class="forecast-card__day">{{ day.date | dayName: day.index }}</p>
+        <span class="forecast-card__icon" aria-hidden="true" [title]="cond.label">{{ cond.icon }}</span>
+        <p class="forecast-card__desc">{{ cond.label }}</p>
+        <div class="forecast-card__temps">
+          <span class="forecast-card__max" aria-label="Máxima {{ day.max }}°">{{ day.max | number:'1.0-0' }}°</span>
+          <span class="forecast-card__divider" aria-hidden="true">/</span>
+          <span class="forecast-card__min" aria-label="Mínima {{ day.min }}°">{{ day.min | number:'1.0-0' }}°</span>
+        </div>
+      </article>
+    }
+  </div>
+</section>
